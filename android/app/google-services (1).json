@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "126189808042",
+    "project_id": "vente-abbc6",
+    "storage_bucket": "vente-abbc6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126189808042:android:7ce030d5d235a7e9e023d3",
+        "android_client_info": {
+          "package_name": "com.example.gestion_de_projet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR295IE4QZpfSjYRMLPhFCyBkZI15ZkTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
