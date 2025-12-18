@@ -5,7 +5,6 @@ import '../../providers/auth_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
-
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -15,8 +14,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
-
-  String _selectedRole = 'client'; // client par défaut
   bool _isLoading = false;
 
   @override
@@ -35,12 +32,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         title: const Text('Inscription'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
-        elevation: 0,
       ),
       body: Center(
         child: Card(
-          elevation: 12,
-          margin: const EdgeInsets.all(20),
+          elevation: 15,
+          margin: const EdgeInsets.all(24),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Padding(
@@ -51,9 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Logo / Icône
                     const Icon(Icons.person_add_alt_1,
-                        size: 80, color: Colors.indigo),
+                        size: 90, color: Colors.indigo),
                     const SizedBox(height: 20),
                     const Text(
                       'Créer un compte',
@@ -62,9 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontWeight: FontWeight.bold,
                           color: Colors.indigo),
                     ),
-                    const SizedBox(height: 30),
-
-                    // Email
+                    const SizedBox(height: 40),
                     TextFormField(
                       controller: _emailCtrl,
                       keyboardType: TextInputType.emailAddress,
@@ -82,8 +75,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Mot de passe
                     TextFormField(
                       controller: _passwordCtrl,
                       obscureText: true,
@@ -96,13 +87,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty)
                           return 'Mot de passe requis';
-                        if (value.length < 6) return 'Minimum 6 caractères';
+                        if (value.length < 6) return '6 caractères minimum';
                         return null;
                       },
                     ),
                     const SizedBox(height: 16),
-
-                    // Confirmer mot de passe
                     TextFormField(
                       controller: _confirmCtrl,
                       obscureText: true,
@@ -118,33 +107,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 24),
-
-                    // Choix du rôle : Admin ou Client
-                    DropdownButtonFormField<String>(
-                      value: _selectedRole,
-                      decoration: InputDecoration(
-                        labelText: 'Type de compte',
-                        prefixIcon: const Icon(Icons.supervised_user_circle),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                      ),
-                      items: const [
-                        DropdownMenuItem(
-                            value: 'client', child: Text('Client (Acheteur)')),
-                        DropdownMenuItem(
-                            value: 'admin', child: Text('Administrateur')),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedRole = value!;
-                        });
-                      },
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Bouton Inscription
+                    const SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
                       height: 55,
@@ -153,7 +116,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           backgroundColor: Colors.indigo,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
-                          elevation: 6,
                         ),
                         onPressed: _isLoading ? null : _handleRegister,
                         child: _isLoading
@@ -164,7 +126,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     fontSize: 18, color: Colors.white)),
                       ),
                     ),
-
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
@@ -185,11 +146,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     setState(() => _isLoading = true);
 
-    final success = await context.read<AuthProvider>().registerWithRole(
-          email: _emailCtrl.text.trim(),
-          password: _passwordCtrl.text,
-          role: _selectedRole, // "client" ou "admin"
-        );
+    final success = await context
+        .read<AuthProvider>()
+        .register(_emailCtrl.text.trim(), _passwordCtrl.text);
 
     setState(() => _isLoading = false);
 
@@ -197,14 +156,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_selectedRole == 'admin'
-              ? 'Administrateur créé avec succès !'
-              : 'Compte client créé avec succès !'),
-          backgroundColor: Colors.green,
-        ),
+        const SnackBar(
+            content: Text('Compte créé avec succès !'),
+            backgroundColor: Colors.green),
       );
-      Navigator.pop(context); // Retour automatique à la page de connexion
+      Navigator.pop(context); // Retour à la page de connexion
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

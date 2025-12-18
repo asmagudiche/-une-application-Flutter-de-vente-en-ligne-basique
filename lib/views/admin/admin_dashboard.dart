@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import 'products_screen.dart';
 
 class AdminDashboard extends StatelessWidget {
   const AdminDashboard({super.key});
@@ -174,13 +175,6 @@ class AdminDashboard extends StatelessWidget {
 }
 
 // Écrans temporaires (tu peux les remplacer plus tard)
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({super.key});
-  @override
-  Widget build(BuildContext context) =>
-      const Scaffold(body: Center(child: Text('Gestion des produits - CRUD')));
-}
-
 class StockScreen extends StatelessWidget {
   const StockScreen({super.key});
   @override
